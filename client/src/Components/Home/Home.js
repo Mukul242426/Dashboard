@@ -1,53 +1,65 @@
-import React from 'react'
+import React, { useState ,useEffect} from 'react'
 import styles from './Home.module.css'
 import { BarChart, Bar,XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
+import axios from 'axios'
+import {FRONTEND_URL} from '../../utils/utils'
 
 function Home() {
 
-    const data = [
-        {
-          name: 'Page A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Page B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Page C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Page D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Page E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Page F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Page G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
+  const [sales,setSales]=useState([]);
+
+
+// top products by revenue
+  const productsData = sales.reduce((accumulator, sale) => {
+    sale.topProducts.forEach((product) => {
+        const existingProduct = accumulator.find((item) => item.name === product.productName);
+        if (existingProduct) {
+            existingProduct.revenue += product.revenue;
+        } else {
+            accumulator.push({ name: product.productName, revenue: product.revenue });
+        }
+    });
+    return accumulator;
+}, []);
+
+
+// total revenue over time
+  const revenueData = sales
+  ?.slice() 
+  .sort((a, b) => new Date(a.date) - new Date(b.date)) 
+  .map((sale) => ({
+    name: new Date(sale.date).toLocaleDateString(),
+    revenue: sale.totalRevenue
+  }));
+
+  useEffect(()=>{
+    console.log("product data is",productsData)
+  },[sales])
+
+
+  useEffect(()=>{
+    const getData=async()=>{
+
+      const jwttoken=JSON.parse(localStorage.getItem('token'))
+
+      try{
+
+        const response=await axios.get(`${FRONTEND_URL}/sales`,{
+          headers:{
+            "Content-Type":"application/json",
+            Authorization:`Bearer ${jwttoken}`
+          }
+        })
+        console.log(response)
+        setSales(response.data.sales)
+
+      }catch(error){
+        console.log(error)
+      }
+
+    }
+    getData()
+  },[])
      
 
   return (
@@ -60,7 +72,7 @@ function Home() {
             <BarChart
             width={500}
             height={300}
-            data={data}
+            data={productsData}
             margin={{
                 top: 5,
                 right: 30,
@@ -73,8 +85,8 @@ function Home() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
+                <Bar dataKey="revenue" fill="#8884d8" />
+                {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
                 </BarChart>
             </ResponsiveContainer>
 
@@ -82,7 +94,7 @@ function Home() {
                 <LineChart
                 width={500}
                 height={300}
-                data={data}
+                data={revenueData}
                 margin={{
                     top: 5,
                     right: 30,
@@ -95,8 +107,7 @@ function Home() {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                <Line type="monotone" dataKey="revenue" stroke="#8884d8" activeDot={{ r: 8 }} />
                 </LineChart>
             </ResponsiveContainer>
 
