@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './Home.module.css'
 import { BarChart, Bar,XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 function Home() {
@@ -50,11 +51,11 @@ function Home() {
      
 
   return (
-    <main className='main-container'>
-        <div className='main-title'>
+    <main className={styles.main_container}>
+        <div className={styles.main_title}>
             <h3>DASHBOARD</h3>
         </div>
-        <div className='charts'>
+        <div className={styles.charts}>
             <ResponsiveContainer width="100%" height="100%">
             <BarChart
             width={500}

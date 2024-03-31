@@ -1,0 +1,32 @@
+.icon {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.header {
+  grid-area: header;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.menu_icon {
+  display: none;
+}
+
+@media screen and (max-width: 992px) {
+  .menu_icon {
+    display: inline;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .header_left {
+    display: none;
+  }
+}
