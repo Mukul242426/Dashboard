@@ -41,7 +41,7 @@ app.use(globalErrorHandler)
 
 app.listen(process.env.PORT,()=>{
     mongoose
-    .connect(process.env.MONGODB_URL,{ dbName:'adminPanel'})
+    .connect(process.env.MONGODB_URL)
     .then(()=>console.log(`Server running successfully on http://localhost:${process.env.PORT}`))
     .catch((error)=>console.log(error))
 })

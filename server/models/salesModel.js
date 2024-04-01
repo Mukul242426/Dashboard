@@ -12,9 +12,7 @@ const salesSchema = new mongoose.Schema({
     salesByRegion: [{
         region: String,
         revenue: Number
-    }],
-    conversionRate: Number,
-    yearOverYearGrowth: Number
+    }]
 });
 
 export const Sale=mongoose.model('Sale',salesSchema);
