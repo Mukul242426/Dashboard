@@ -1,1 +1,1 @@
-export const FRONTEND_URL='http://localhost:4000/api/v1'
+export const FRONTEND_URL='https://admin-dashboard-rsi4.onrender.com/api/v1'
