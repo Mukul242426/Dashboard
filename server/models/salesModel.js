@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const salesSchema = new mongoose.Schema({
     date: Date,
     totalRevenue: Number,
-    totalUnitsSold: Number,
     averageOrderValue: Number,
     topProducts: [{
         productName: String,
@@ -14,9 +13,7 @@ const salesSchema = new mongoose.Schema({
         region: String,
         revenue: Number
     }],
-    averageCustomerLifetimeValue: Number,
     conversionRate: Number,
-    salesCycleLength: Number,
     yearOverYearGrowth: Number
 });
 
